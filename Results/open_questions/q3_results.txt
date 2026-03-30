@@ -1,0 +1,33 @@
+=== Feature augmentation: iris ===
+Depth: 2 | Added features: 2 | Time limit: 60s
+Original dataset: train/test = 5/1 | split nodes = 2 | time = 11.7s | gap = 0.0%
+Generated features: train/test = 2/2 | split nodes = 3 | time = 4.3s | gap = 0.0%
+Selected generated features:
+  - x2 + x4 | score = 0.529
+  - x3 * x4 | score = 0.502
+
+=== Feature augmentation: seeds ===
+Depth: 2 | Added features: 2 | Time limit: 60s
+Original dataset: train/test = 11/2 | split nodes = 3 | time = 60.1s | gap = 5.8%
+Generated features: train/test = 10/3 | split nodes = 3 | time = 47.0s | gap = 0.0%
+Selected generated features:
+  - x1 + x4 | score = 0.908
+  - x3 + x4 | score = 0.901
+
+=== Feature augmentation: wine ===
+Depth: 2 | Added features: 2 | Time limit: 60s
+Original dataset: train/test = 7/2 | split nodes = 3 | time = 60.6s | gap = 4.2%
+Generated features: train/test = 5/2 | split nodes = 3 | time = 60.0s | gap = 2.3%
+Selected generated features:
+  - x2 + x10 | score = 0.786
+  - x2 * x10 | score = 0.739
+
+=== Precomputed feature augmentation: titanic_formatted ===
+Depth: 2 | Features: 6 -> 9 | Time limit: 10s
+Original dataset: train/test = 256/76 | split nodes = 3 | time = 10.1s | gap = 56.1%
+Precomputed augmented dataset: train/test = 182/39 | split nodes = 3 | time = 10.3s | gap = 34.3%
+
+=== Precomputed feature augmentation: diabetes_risk_formatted ===
+Depth: 2 | Features: 17 -> 20 | Time limit: 10s
+Original dataset: train/test = 3880/967 | split nodes = 3 | time = 10.9s | gap = 4.8e9%
+Precomputed augmented dataset: train/test = 3880/967 | split nodes = 3 | time = 10.9s | gap = 4.8e9%

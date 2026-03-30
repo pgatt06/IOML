@@ -1,0 +1,84 @@
+=== Opposite-corner and linked-set study ===
+Unit-flow univariate formulation with three variants: baseline, all equalities, and cutting plane.
+Depth = 2 | time limit = 30s
+
+=== Comparison without rounding ===
+Dataset: iris | train samples = 120 | features = 4
+iris | mode = baseline | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 120.0 | train errors = 5 | time = 7.3s | B&B nodes = 1223 | cut rounds = 1
+iris | mode = all_equalities | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 120.0 | train errors = 5 | time = 7.2s | B&B nodes = 1223 | cut rounds = 1
+iris | mode = cutting_plane | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 120.0 | train errors = 5 | time = 7.7s | B&B nodes = 1223 | cut rounds = 1
+
+Dataset: seeds | train samples = 168 | features = 6
+seeds | mode = baseline | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 168.0 | train errors = 11 | time = 30.1s | B&B nodes = 4422 | cut rounds = 1
+seeds | mode = all_equalities | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 168.0 | train errors = 11 | time = 30.1s | B&B nodes = 4493 | cut rounds = 1
+seeds | mode = cutting_plane | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 168.0 | train errors = 11 | time = 30.5s | B&B nodes = 4365 | cut rounds = 1
+
+Dataset: wine | train samples = 142 | features = 13
+wine | mode = baseline | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 142.0 | train errors = 5 | time = 30.1s | B&B nodes = 3074 | cut rounds = 1
+wine | mode = all_equalities | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 142.0 | train errors = 5 | time = 30.2s | B&B nodes = 2992 | cut rounds = 1
+wine | mode = cutting_plane | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 142.0 | train errors = 5 | time = 30.5s | B&B nodes = 2989 | cut rounds = 1
+
+=== Comparison on the first useful rounded data ===
+Dataset: iris | selected rounding = 1 | train samples = 120 | features = 4
+iris | mode = baseline | candidates opp./linked = 237/4 | added opp./linked = 0/0 | LP = 120.0 | train errors = 5 | time = 11.4s | B&B nodes = 1606 | cut rounds = 1
+iris | mode = all_equalities | candidates opp./linked = 237/4 | added opp./linked = 237/4 | LP = 120.0 | train errors = 5 | time = 6.4s | B&B nodes = 317 | cut rounds = 1
+iris | mode = cutting_plane | candidates opp./linked = 237/4 | added opp./linked = 186/0 | LP = 120.0 | train errors = 5 | time = 8.1s | B&B nodes = 433 | cut rounds = 3
+
+Dataset: seeds | selected rounding = 1 | train samples = 168 | features = 6
+seeds | mode = baseline | candidates opp./linked = 60/0 | added opp./linked = 0/0 | LP = 168.0 | train errors = 16 | time = 25.4s | B&B nodes = 5404 | cut rounds = 1
+seeds | mode = all_equalities | candidates opp./linked = 60/0 | added opp./linked = 60/0 | LP = 168.0 | train errors = 17 | time = 30.1s | B&B nodes = 2835 | cut rounds = 1
+seeds | mode = cutting_plane | candidates opp./linked = 60/0 | added opp./linked = 44/0 | LP = 168.0 | train errors = 16 | time = 31.1s | B&B nodes = 5677 | cut rounds = 5
+=== Opposite-corner and linked-set study ===
+Unit-flow univariate formulation with three variants: baseline, all equalities, and cutting plane.
+Depth = 2 | time limit = 30s
+
+=== Comparison without rounding ===
+Dataset: iris | train samples = 120 | features = 4
+iris | mode = baseline | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 120.0 | train errors = 5 | time = 15.1s | B&B nodes = 1223 | cut rounds = 1
+iris | mode = all_equalities | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 120.0 | train errors = 5 | time = 18.9s | B&B nodes = 1223 | cut rounds = 1
+iris | mode = cutting_plane | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 120.0 | train errors = 5 | time = 20.3s | B&B nodes = 1223 | cut rounds = 1
+
+Dataset: seeds | train samples = 168 | features = 6
+seeds | mode = baseline | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 168.0 | train errors = 11 | time = 30.2s | B&B nodes = 826 | cut rounds = 1
+seeds | mode = all_equalities | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 168.0 | train errors = 11 | time = 30.2s | B&B nodes = 862 | cut rounds = 1
+seeds | mode = cutting_plane | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 168.0 | train errors = 11 | time = 30.8s | B&B nodes = 802 | cut rounds = 1
+
+Dataset: wine | train samples = 142 | features = 13
+wine | mode = baseline | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 142.0 | train errors = 13 | time = 30.3s | B&B nodes = 533 | cut rounds = 1
+wine | mode = all_equalities | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 142.0 | train errors = 12 | time = 30.3s | B&B nodes = 592 | cut rounds = 1
+wine | mode = cutting_plane | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 142.0 | train errors = 12 | time = 30.7s | B&B nodes = 612 | cut rounds = 1
+
+=== Comparison on the first useful rounded data ===
+Dataset: iris | selected rounding = 1 | train samples = 120 | features = 4
+iris | mode = baseline | candidates opp./linked = 237/4 | added opp./linked = 0/0 | LP = 120.0 | train errors = 5 | time = 25.9s | B&B nodes = 1606 | cut rounds = 1
+iris | mode = all_equalities | candidates opp./linked = 237/4 | added opp./linked = 237/4 | LP = 120.0 | train errors = 5 | time = 10.8s | B&B nodes = 317 | cut rounds = 1
+iris | mode = cutting_plane | candidates opp./linked = 237/4 | added opp./linked = 186/0 | LP = 120.0 | train errors = 5 | time = 16.6s | B&B nodes = 433 | cut rounds = 3
+
+Dataset: seeds | selected rounding = 1 | train samples = 168 | features = 6
+seeds | mode = baseline | candidates opp./linked = 60/0 | added opp./linked = 0/0 | LP = 168.0 | train errors = 21 | time = 30.1s | B&B nodes = 1716 | cut rounds = 1
+seeds | mode = all_equalities | candidates opp./linked = 60/0 | added opp./linked = 60/0 | LP = 168.0 | train errors = 24 | time = 30.2s | B&B nodes = 465 | cut rounds = 1
+seeds | mode = cutting_plane | candidates opp./linked = 60/0 | added opp./linked = 44/0 | LP = 168.0 | train errors = 16 | time = 37.0s | B&B nodes = 1474 | cut rounds = 5
+
+Dataset: wine | selected rounding = 0 | train samples = 142 | features = 13
+wine | mode = baseline | candidates opp./linked = 1421/0 | added opp./linked = 0/0 | LP = 142.0 | train errors = 21 | time = 30.1s | B&B nodes = 18 | cut rounds = 1
+wine | mode = all_equalities | candidates opp./linked = 1421/0 | added opp./linked = 1421/0 | LP = 142.0 | train errors = 21 | time = 29.2s | B&B nodes = 0 | cut rounds = 1
+wine | mode = cutting_plane | candidates opp./linked = 1421/0 | added opp./linked = 1028/0 | LP = 142.0 | train errors = 21 | time = 23.3s | B&B nodes = 0 | cut rounds = 3
+
+=== Rounding with cutting plane ===
+Dataset: iris | train samples = 120 | features = 4
+iris | rounding = none | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 120.0 | train errors = 5 | time = 20.9s | B&B nodes = 1223 | cut rounds = 1
+iris | rounding = 2 | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 120.0 | train errors = 5 | time = 30.6s | B&B nodes = 1522 | cut rounds = 1
+iris | rounding = 1 | candidates opp./linked = 237/4 | added opp./linked = 186/0 | LP = 120.0 | train errors = 5 | time = 17.5s | B&B nodes = 433 | cut rounds = 3
+iris | rounding = 0 | candidates opp./linked = 1333/0 | added opp./linked = 741/0 | LP = 120.0 | train errors = 22 | time = 6.9s | B&B nodes = 0 | cut rounds = 3
+
+Dataset: seeds | train samples = 168 | features = 6
+seeds | rounding = none | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 168.0 | train errors = 11 | time = 30.9s | B&B nodes = 1779 | cut rounds = 1
+seeds | rounding = 2 | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 168.0 | train errors = 11 | time = 30.5s | B&B nodes = 2383 | cut rounds = 1
+seeds | rounding = 1 | candidates opp./linked = 60/0 | added opp./linked = 44/0 | LP = 168.0 | train errors = 16 | time = 33.5s | B&B nodes = 2693 | cut rounds = 5
+seeds | rounding = 0 | candidates opp./linked = 2866/0 | added opp./linked = 556/0 | LP = 168.0 | train errors = 25 | time = 5.8s | B&B nodes = 0 | cut rounds = 2
+
+Dataset: wine | train samples = 142 | features = 13
+wine | rounding = none | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 142.0 | train errors = 5 | time = 30.9s | B&B nodes = 1557 | cut rounds = 1
+wine | rounding = 2 | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 142.0 | train errors = 12 | time = 30.6s | B&B nodes = 1232 | cut rounds = 1
+wine | rounding = 1 | candidates opp./linked = 0/0 | added opp./linked = 0/0 | LP = 142.0 | train errors = 7 | time = 30.5s | B&B nodes = 1591 | cut rounds = 1
+wine | rounding = 0 | candidates opp./linked = 1421/0 | added opp./linked = 1028/0 | LP = 142.0 | train errors = 21 | time = 13.2s | B&B nodes = 0 | cut rounds = 3

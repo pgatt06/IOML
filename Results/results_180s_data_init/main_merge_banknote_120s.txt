@@ -1,0 +1,14 @@
+=== Dataset banknote ===
+File: /Users/p.gatt/Documents/3A/IOML/Project/src/../data/data_banknote_authentication.txt
+ (train size 1097, test size 275, 4, features count: 4)
+Time limit: 180s
+Global time limit per configuration: 120s
+	D = 2
+		Univarié
+			Gamma		# clusters	Gap
+			0.0%		2 clusters	0.0%	Erreurs train/test : 492/118	2.6s
+			20.0%		219 clusters	0.0%	Erreurs train/test : 414/102	2.4s
+			40.0%		438 clusters	2.9%	Erreurs train/test : 411/101	119.1s
+			60.0%		658 clusters	18.5%	Erreurs train/test : 412/101	119.1s	[global timeout 120.2s]
+			80.0%		877 clusters	19.9%	Erreurs train/test : 394/101	118.1s
+			100.0%		1097 clusters	

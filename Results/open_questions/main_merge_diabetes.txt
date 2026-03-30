@@ -1,0 +1,27 @@
+=== Diabetes merge, gamma = 0 ===
+D = 2
+Univariate
+      Gamma	Clusters	Gap	Train/Test	Time
+      0.0%	3		0.0%	317/79		5.0s
+
+Multivariate
+      Gamma	Clusters	Gap	Train/Test	Time
+      0.0%	3		0.0%	3880/967		7.5s
+
+D = 3
+Univariate
+      Gamma	Clusters	Gap	Train/Test	Time
+      0.0%	3		0.0%	317/79		0.2s
+
+Multivariate
+      Gamma	Clusters	Gap	Train/Test	Time
+      0.0%	3		0.0%	3001/754		13.0s
+
+D = 4
+Univariate
+      Gamma	Clusters	Gap	Train/Test	Time
+      0.0%	3		0.0%	317/79		0.2s
+
+Multivariate
+      Gamma	Clusters	Gap	Train/Test	Time
+      0.0%	3		130.7%	2719/679		24.4s

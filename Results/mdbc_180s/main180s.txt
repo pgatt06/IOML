@@ -1,0 +1,20 @@
+
+julia> main_wdbc(time_limit=180)
+=== Dataset wdbc ===
+File: /Users/p.gatt/Documents/3A/IOML/Project/src/../data/wdbc.data
+Samples: 569 | Features: 30
+Train: 455 | Test: 114 | Classes: [0, 1]
+Time limit: 180s
+
+  D = 2
+    Univarié...         180.1s  gap 4.6%        Erreurs train/test 20/11
+    Multivarié...       4.2s    gap 0.0%        Erreurs train/test 0/6
+
+  D = 3
+    Univarié...         180.3s  gap 4.1%        Erreurs train/test 18/14
+    Multivarié...       19.1s   gap 0.0%        Erreurs train/test 0/5
+
+  D = 4
+    Univarié...         180.2s  gap 6.1%        Erreurs train/test 25/13
+    Multivarié...       181.8s  gap 59.1%       Erreurs train/test 169/43
+
