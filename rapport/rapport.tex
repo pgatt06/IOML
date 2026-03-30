@@ -304,9 +304,12 @@ Applying this algorithm to the five datasets yielded the following new features.
 \end{tabular}
 }
 \end{table}
+\textbf{Feature Correlation Analysis:}
+The simple mathematical combinations successfully extracted stronger predictive signals. For example, on the \textit{Diabetes Risk} dataset, the best original feature (F17) had a correlation of $0.583$ with the target. By combining it with F9 using an absolute difference ($|F9 - F17|$), the correlation jumped significantly to $\textbf{0.684}$. Similarly, on the \textit{Wine} dataset, adding F12 and F13 created a highly discriminative feature reaching a correlation of $0.883$. 
+\textit{(Note: On the Seeds dataset, the original feature F5 remained marginally more correlated than the generated distance-to-mean features, but these new features still provide orthogonal splits that may benefit the tree).}
 
-\subsubsection{Performance results}
-We finally obtained these results on our performance :
+\subsubsection{Impact on Classification Performance}
+We finally obtained these results of classification at depth 2:
 
 \begin{table}[htbp]
 \centering
