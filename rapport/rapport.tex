@@ -260,7 +260,53 @@ The clearest result in this section is the role of \emph{shifts}. The $F_h^S$ va
 
 \subsection{Feature Augmentation}
 
-A small feature engineering study was also carried out. The procedure builds sums, absolute differences, products, and ratios between variables, ranks the candidates by absolute correlation with the target, and then reruns an exact univariate tree at depth 2. For the larger datasets, the same idea is evaluated through precomputed augmented versions of \texttt{titanic} and \texttt{diabetes}.
+\subsubsection{Algorithm for Feature Generation and Selection}
+As suggested in the project guidelines, adding new features derived from simple mathematical combinations of existing ones can significantly simplify the classification task without losing the inherent interpretability of optimal classification trees. To achieve this, we avoided complex linear combinations (such as PCA) and implemented a systematic filtering algorithm:
+
+\begin{enumerate}
+    \item \textbf{Generation:} For every pair of existing numerical features $(X_a, X_b)$, we generated non-linear combinations: the sum ($X_a + X_b$), the absolute difference ($|X_a - X_b|$), the product ($X_a \times X_b$), the ratios ($X_a / X_b$), and absolute differences from the mean ($|X_a - \mu_a| + |X_b - \mu_b|$).
+    \item \textbf{Evaluation via Correlation Matrix:} We evaluated the predictive power of each newly generated feature by computing the absolute Pearson correlation score with respect to the target variable $Y$.
+    \item \textbf{Selection:} To prevent combinatorial explosion and avoid overloading the exact formulation $F$, the algorithm ranks the generated features by their correlation score and only appends the top $k=3$ features to each dataset.
+\end{enumerate}
+
+\subsubsection{Results of Feature Generation}
+
+Applying this algorithm to the five datasets yielded the following new features. As shown in the table below, the combined features systematically exhibit a higher linear correlation with the target class than any of the original isolated variables.
+
+\begin{table}[htbp]
+\centering
+\caption{Feature Engineering Results: Original vs. Top 3 Generated Features}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lcccccc}
+\hline
+\textbf{Dataset} & \textbf{Original Size} & \textbf{Best Original Feature} & \textbf{Top 1 Generated} & \textbf{Top 2 Generated} & \textbf{Top 3 Generated} & \textbf{New Size} \\
+\hline
+\multirow{2}{*}{\textbf{Iris}} & \multirow{2}{*}{150 $\times$ 4} 
+ & F4 & F3 + F4 & F3 $\times$ F4 & F1 + F4 & \multirow{2}{*}{150 $\times$ 7} \\
+ & & $(0.956)$ & \textbf{(0.962)} & (0.942) & (0.925) & \\
+\hline
+\multirow{2}{*}{\textbf{Seeds}} & \multirow{2}{*}{210 $\times$ 6} 
+ & F5 & $|F1 - \mu_1| + |F4 - \mu_4|$ & $|F2 - \mu_2| + |F3 - \mu_3|$ & $|F1 - \mu_1| + |F2 - \mu_2|$ & \multirow{2}{*}{210 $\times$ 9} \\
+ & & $(0.577)$ & (0.565) & (0.554) & (0.546) & \\
+\hline
+\multirow{2}{*}{\textbf{Wine}} & \multirow{2}{*}{178 $\times$ 13} 
+ & F7 & F12 + F13 & F7 + F12 & F7 + F13 & \multirow{2}{*}{178 $\times$ 16} \\
+ & & $(0.847)$ & \textbf{(0.883)} & \textbf{(0.861)} & \textbf{(0.853)} & \\
+\hline
+\multirow{2}{*}{\textbf{Titanic}} & \multirow{2}{*}{891 $\times$ 6} 
+ & F2 & F2 + F6 & $|F2 - F5|$ & $|F2 - F4|$ & \multirow{2}{*}{891 $\times$ 9} \\
+ & & $(0.543)$ & \textbf{(0.564)} & \textbf{(0.558)} & (0.540) & \\
+\hline
+\multirow{2}{*}{\textbf{Diabetes}} & \multirow{2}{*}{6000 $\times$ 17} 
+ & F17 & $|F9 - F17|$ & $|F11 - F17|$ & F16 $\times$ F17 & \multirow{2}{*}{6000 $\times$ 20} \\
+ & & $(0.583)$ & \textbf{(0.684)} & \textbf{(0.679)} & \textbf{(0.639)} & \\
+\hline
+\end{tabular}
+}
+\end{table}
+
+\subsubsection{Performance results}
+We finally obtained these results on our performance :
 
 \begin{table}[htbp]
 \centering
