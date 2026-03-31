@@ -1,7 +1,41 @@
-OBSOLETE DRAFT LOG
-This legacy file predates the grouped-multivariate evaluation fix in src/struct/tree.jl.
-Do not use it for the final report.
-Use Results/corrected_merge_multivariate_summary.txt and rapport/rapport.tex instead.
+
+iris
+- D=2: gamma=20%, train/test=1/0, time=0.5s, gap=0.0%
+- D=3: gamma=100%, train/test=0/0, time=1.8s, gap=0.0%
+- D=4: gamma=100%, train/test=0/1, time=14.0s, gap=0.0%
+
+seeds
+- D=2: gamma=40%, train/test=0/0, time=0.5s, gap=0.0%
+- D=3: gamma=40%, train/test=0/1, time=1.9s, gap=0.0%
+- D=4: gamma=80%, train/test=0/0, time=34.1s, gap=0.0%
+
+wine
+- D=2: gamma=100%, train/test=0/1, time=0.7s, gap=0.0%
+- D=3: gamma=0%, train/test=0/1, time=0.1s, gap=0.0%
+- D=4: gamma=80%, train/test=0/0, time=7.7s, gap=0.0%
+
+banknote
+- D=2: no feasible multivariate grouped solution within 180s
+- D=3: no feasible multivariate grouped solution within 180s
+- D=4: no feasible multivariate grouped solution within 180s
+
+wdbc
+- D=2: gamma=20%, train/test=0/6, time=0.6s, gap=0.0%
+- D=3: gamma=0%, train/test=0/6, time=1.6s, gap=0.0%
+- D=4: gamma=40%, train/test=0/4, time=36.3s, gap=0.0%
+
+titanic_formatted
+- D=2: gamma=20%, train/test=119/32, time=10.2s, gap=21.5%
+- D=3: gamma=20%, train/test=168/46, time=10.2s, gap=39.9%
+- D=4: gamma=0%, train/test=263/79, time=4.2s, gap=0.0%
+
+diabetes_risk_formatted
+- D=2: gamma=0%, train/test=0/6, time=11.6s, gap=0.0%
+- D=3: gamma=0%, train/test=0/6, time=9.2s, gap=0.0%
+- D=4: gamma=0%, train/test=2719/679, time=15.7s, gap=130.7%
+
+
+===== main_merge() historical raw output =====
 
 testMerge (generic function with 1 method)
 
@@ -269,3 +303,163 @@ julia> main_merge()
                         60.0%           427 clusters    58.6%   Erreurs train/test : 263/79     10.4s
                         80.0%           569 clusters    48.6%   Erreurs train/test : 449/100    10.2s
                         100.0%          712 clusters    58.6%   Erreurs train/test : 263/79     10.2s
+
+
+===== main_merge_banknote(time_limit=180) raw output =====
+
+=== Dataset banknote ===
+File: /Users/p.gatt/Documents/3A/IOML/Project/src/../data/data_banknote_authentication.txt
+ (train size 1097, test size 275, 4, features count: 4)
+Time limit per gamma (solver): 180s
+Wall time limit per gamma: 180s
+        D = 2
+                Univarié
+                        Gamma           # clusters      Gap
+                        0.0%            2 clusters      0.0%    Erreurs train/test : 492/118    1.0s
+                        20.0%           219 clusters    0.0%    Erreurs train/test : 414/102    1.9s
+                        40.0%           438 clusters    0.0%    Erreurs train/test : 399/102    59.1s
+60.0%           658 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+80.0%           877 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+100.0%          1097 clusters   ???%    Erreurs train/test : timeout/timeout    >180s
+
+                Multivarié
+                        Gamma           # clusters      Gap
+0.0%            2 clusters      ???%    Erreurs train/test : timeout/timeout    >180s
+20.0%           219 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+40.0%           438 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+60.0%           658 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+                        80.0%           ?       ???%    Erreurs train/test : timeout/timeout    >180s
+100.0%          1097 clusters   ???%    Erreurs train/test : timeout/timeout    >180s
+
+        D = 3
+                Univarié
+                        Gamma           # clusters      Gap
+                        0.0%            2 clusters      0.0%    Erreurs train/test : 492/118    1.0s
+                        20.0%           219 clusters    0.0%    Erreurs train/test : 414/102    19.6s
+40.0%           438 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+60.0%           658 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+80.0%           877 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+100.0%          1097 clusters   ???%    Erreurs train/test : timeout/timeout    >180s
+
+                Multivarié
+                        Gamma           # clusters      Gap
+0.0%            2 clusters      ???%    Erreurs train/test : timeout/timeout    >180s
+20.0%           219 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+40.0%           438 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+60.0%           658 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+80.0%           877 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+100.0%          1097 clusters   ???%    Erreurs train/test : timeout/timeout    >180s
+
+        D = 4
+                Univarié
+                        Gamma           # clusters      Gap
+                        0.0%            2 clusters      0.0%    Erreurs train/test : 492/118    1.0s
+20.0%           219 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+40.0%           438 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+60.0%           658 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+80.0%           877 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+100.0%          1097 clusters   ???%    Erreurs train/test : timeout/timeout    >180s
+
+                Multivarié
+                        Gamma           # clusters      Gap
+0.0%            2 clusters      ???%    Erreurs train/test : timeout/timeout    >180s
+20.0%           219 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+40.0%           438 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+60.0%           658 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+80.0%           877 clusters    ???%    Erreurs train/test : timeout/timeout    >180s
+100.0%          1097 clusters   ???%    Erreurs train/test : timeout/timeout    >180s
+
+===== main_merge_wdbc(time_limit=180) raw output =====
+
+julia> main_merge_wdbc(time_limit=180)
+=== Dataset wdbc ===
+File: /Users/p.gatt/Documents/3A/IOML/Project/src/../data/wdbc.data
+ (train size 455, test size 114, 30, features count: 30)
+Time limit per gamma: 180s
+        D = 2
+                Univarié
+                        Gamma           # clusters      Gap
+                        0.0%            2 clusters      0.0%    Erreurs train/test : 354/90     0.0s
+                        20.0%           91 clusters     0.0%    Erreurs train/test : 29/8       29.3s
+                        40.0%           182 clusters    0.0%    Erreurs train/test : 21/7       37.2s
+                        60.0%           273 clusters    3.2%    Erreurs train/test : 22/7       180.1s
+                        80.0%           364 clusters    4.1%    Erreurs train/test : 18/6       180.1s
+                        100.0%          455 clusters    5.6%    Erreurs train/test : 24/11      180.2s
+
+                Multivarié
+                        Gamma           # clusters      Gap
+                        0.0%            2 clusters      0.0%    Erreurs train/test : 169/43     0.8s
+                        20.0%           91 clusters     0.0%    Erreurs train/test : 169/43     4.5s
+                        40.0%           182 clusters    0.0%    Erreurs train/test : 169/43     3.7s
+                        60.0%           273 clusters    0.0%    Erreurs train/test : 169/43     0.5s
+                        80.0%           364 clusters    0.0%    Erreurs train/test : 169/43     1.8s
+                        100.0%          455 clusters    0.0%    Erreurs train/test : 286/71     8.3s
+
+        D = 3
+                Univarié
+                        Gamma           # clusters      Gap
+                        0.0%            2 clusters      0.0%    Erreurs train/test : 354/90     0.0s
+                        20.0%           91 clusters     0.0%    Erreurs train/test : 26/8       40.9s
+                        40.0%           182 clusters    3.5%    Erreurs train/test : 20/7       180.0s
+                        60.0%           273 clusters    5.6%    Erreurs train/test : 20/7       180.1s
+                        80.0%           364 clusters    3.9%    Erreurs train/test : 16/4       523.7s
+                        100.0%          455 clusters    5.6%    Erreurs train/test : 23/10      1072.2s
+
+                Multivarié
+                        Gamma           # clusters      Gap
+                        0.0%            2 clusters      0.0%    Erreurs train/test : 286/71     1.2s
+                        20.0%           91 clusters     0.0%    Erreurs train/test : 286/71     10.5s
+                        40.0%           182 clusters    0.0%    Erreurs train/test : 169/43     9.5s
+                        60.0%           273 clusters    0.0%    Erreurs train/test : 286/71     5.7s
+                        80.0%           364 clusters    0.0%    Erreurs train/test : 286/71     10.0s
+                        100.0%          455 clusters    0.0%    Erreurs train/test : 169/43     12.6s
+
+        D = 4
+                Univarié
+                        Gamma           # clusters      Gap
+                        0.0%            2 clusters      0.0%    Erreurs train/test : 356/90     0.1s
+                        20.0%           91 clusters     31.7%   Erreurs train/test : 30/9       180.1s
+                        40.0%           182 clusters    16.1%   Erreurs train/test : 35/10      180.1s
+                        60.0%           273 clusters    6.1%    Erreurs train/test : 20/10      209.6s
+                        80.0%           364 clusters    7.1%    Erreurs train/test : 29/6       180.3s
+                        100.0%          455 clusters    6.1%    Erreurs train/test : 26/7       180.3s
+
+                Multivarié
+                        Gamma           # clusters      Gap
+                        0.0%            2 clusters      0.0%    Erreurs train/test : 169/43     1.4s
+                        20.0%           91 clusters     0.0%    Erreurs train/test : 286/71     7.1s
+                        40.0%           182 clusters    0.0%    Erreurs train/test : 169/43     87.6s
+                        60.0%           273 clusters    0.0%    Erreurs train/test : 286/71     180.3s
+                        80.0%           364 clusters    0.0%    Erreurs train/test : 286/71     57.8s
+                        100.0%          455 clusters    0.0%    Erreurs train/test : 286/71     46.9s
+
+
+===== main_merge on diabetes (gamma = 0 exploratory run) =====
+
+=== Diabetes merge, gamma = 0 ===
+D = 2
+Univariate
+      Gamma	Clusters	Gap	Train/Test	Time
+      0.0%	3		0.0%	317/79		5.0s
+
+Multivariate
+      Gamma	Clusters	Gap	Train/Test	Time
+      0.0%	3		0.0%	3880/967		7.5s
+
+D = 3
+Univariate
+      Gamma	Clusters	Gap	Train/Test	Time
+      0.0%	3		0.0%	317/79		0.2s
+
+Multivariate
+      Gamma	Clusters	Gap	Train/Test	Time
+      0.0%	3		0.0%	3001/754		13.0s
+
+D = 4
+Univariate
+      Gamma	Clusters	Gap	Train/Test	Time
+      0.0%	3		0.0%	317/79		0.2s
+
+Multivariate
+      Gamma	Clusters	Gap	Train/Test	Time
+      0.0%	3		130.7%	2719/679		24.4s

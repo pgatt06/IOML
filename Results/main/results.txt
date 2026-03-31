@@ -1,0 +1,34 @@
+Dataset: iris
+D = 2 | univariate = 5/1 | 3.4s | gap 0.0% | multivariate = 1/3 | 0.5s | gap 0.0%
+D = 3 | univariate = 0/3 | 26.3s | gap 0.0% | multivariate = 0/3 | 2.0s | gap 0.0%
+D = 4 | univariate = 0/1 | 28.5s | gap 0.0% | multivariate = 0/2 | 6.2s | gap 0.0%
+
+Dataset: seeds
+D = 2 | univariate = 10/3 | 66.1s | gap 0.0% | multivariate = 0/0 | 0.5s | gap 0.0%
+D = 3 | univariate = 6/3 | 180.0s | gap 3.7% | multivariate = 0/1 | 3.3s | gap 0.0%
+D = 4 | univariate = 4/5 | 180.1s | gap 2.4% | multivariate = 0/2 | 16.5s | gap 0.0%
+
+Dataset: wine
+D = 2 | univariate = 5/2 | 31.4s | gap 0.0% | multivariate = 0/1 | 0.3s | gap 0.0%
+D = 3 | univariate = 0/2 | 56.0s | gap 0.0% | multivariate = 0/0 | 1.1s | gap 0.0%
+D = 4 | univariate = 2/4 | 180.1s | gap 1.4% | multivariate = 0/2 | 9.4s | gap 0.0%
+
+Dataset: banknote
+D = 2 | univariate = 390/100 | 181.1s | gap 14.8% | multivariate = 0/1 | 3.9s | gap 0.0%
+D = 3 | univariate = 382/103 | 180.2s | gap 22.0% | multivariate = 0/0 | 6.7s | gap 0.0%
+D = 4 | univariate = 391/102 | 180.5s | gap 23.5% | multivariate = 605/157 | 181.6s | gap 123.0%
+
+Dataset: wdbc
+D = 2 | univariate = 20/11 | 180.1s | gap 4.6% | multivariate = 0/6 | 4.2s | gap 0.0%
+D = 3 | univariate = 18/14 | 180.3s | gap 4.1% | multivariate = 0/5 | 19.1s | gap 0.0%
+D = 4 | univariate = 25/13 | 180.2s | gap 6.1% | multivariate = 169/43 | 181.8s | gap 59.1%
+
+Dataset: titanic
+D = 2 | univariate = 137/38 | 360.3s | gap 23.8% | multivariate = 125/39 | 360.8s | gap 21.3%
+D = 3 | univariate = 118/32 | 360.3s | gap 19.9% | multivariate = 141/38 | 360.3s | gap 28.5%
+D = 4 | univariate = 163/45 | 361.2s | gap 29.7% | multivariate = 263/79 | 360.7s | gap 58.6%
+
+Dataset: diabetes
+D = 2 | univariate = 0/0 | 65.2s | gap 0.0% | multivariate = 0/6 | 29.8s | gap 0.0%
+D = 3 | univariate = 3880/967 | 361.3s | gap 4.8e9% | multivariate = 0/6 | 19.3s | gap 0.0%
+D = 4 | univariate = 2719/679 | 362.5s | gap 130.7% | multivariate = 3880/967 | 362.5s | gap 421.7%

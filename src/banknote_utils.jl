@@ -33,6 +33,7 @@ function load_banknote(file_path::AbstractString)
             continue
         end
 
+        # The dataset already provides a binary class, so no extra recoding is needed here.
         append!(values, features)
         push!(labels, label)
     end

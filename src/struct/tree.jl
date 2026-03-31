@@ -60,6 +60,7 @@ function Tree(D::Int64, a::Matrix{Float64}, c::Vector{Int64}, u::Matrix{Int64}, 
                 parent = fld(node, 2)
                 projection = sum(a[feature_id, parent] * x[sample_id, feature_id] for feature_id in 1:feature_count)
 
+                # We recover the realized left/right interval induced by the sample flows and place b at its midpoint.
                 if node % 2 == 0
                     lower_bounds[parent] = max(lower_bounds[parent], projection)
                 else
@@ -121,6 +122,7 @@ function Tree(
                     for feature_id in 1:feature_count
                 )
 
+                # In the clustered heuristic, thresholds are recentered from barycenter flows rather than from individual samples.
                 if node % 2 == 0
                     lower_bounds[parent] = max(lower_bounds[parent], projection)
                 else
@@ -174,6 +176,7 @@ function Tree(D::Int64, c::Vector{Int64}, u::Matrix{Int64}, s_model::Matrix{Int6
         left_count = length(left_ids)
         right_count = length(right_ids)
 
+        # Once the support pattern is fixed by the main MIP, a second model maximizes the realized split margin.
         model = Model(CPLEX.Optimizer)
         set_silent(model)
 
@@ -251,6 +254,7 @@ function Tree(D::Int64, c::Vector{Int64}, u::Matrix{Int64}, s_model::Matrix{Int6
         left_count = size(left_data, 1)
         right_count = size(right_data, 1)
 
+        # The grouped multivariate tree is recentered on the full samples contained in the selected left/right clusters.
         model = Model(CPLEX.Optimizer)
         set_silent(model)
 

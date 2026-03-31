@@ -59,6 +59,7 @@ function simpleMerge(x::Matrix{Float64}, y, gamma)
     remaining_clusters = sample_count
     distance_id = 1
 
+    # This is the greedy grouped-data heuristic: merge the closest same-class samples until the target ratio is reached.
     while distance_id <= length(distances) && remaining_clusters > sample_count * gamma
         distance = distances[distance_id]
         first_cluster_id = cluster_ids[distance.ids[1]]
@@ -96,6 +97,7 @@ function canMerge(first_cluster::Cluster, second_cluster::Cluster, x::Matrix{Flo
     while sample_id <= size(x, 1) && merge_is_valid
         sample = x[sample_id, :]
 
+        # H1 is checked on one-dimensional projections: an outside sample intersecting one interval is enough to reject the merge.
         if !(sample_id in first_cluster.dataIds) &&
            !(sample_id in second_cluster.dataIds) &&
            isInABound(sample, merged_lower_bounds, merged_upper_bounds)

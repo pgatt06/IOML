@@ -21,6 +21,7 @@ function load_wdbc(file_path::AbstractString)
         parts = split(stripped_row, ',')
         length(parts) == feature_count + 2 || continue
 
+        # We map the diagnostic labels to a binary class, keeping the same two-class setting as in the course models.
         label = if strip(parts[2]) == "M"
             1
         elseif strip(parts[2]) == "B"

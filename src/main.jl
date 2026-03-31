@@ -23,6 +23,7 @@ function run_exact_dataset(dataset_name::String; time_limit::Int = 180, depths =
     for depth in depths
         println("  D = ", depth)
 
+        # This is the exact univariate OCT model from CM1: each internal node selects one feature and one threshold.
         tree, objective, resolution_time, gap = build_tree(
             dataset.X_train,
             dataset.Y_train,
@@ -33,6 +34,7 @@ function run_exact_dataset(dataset_name::String; time_limit::Int = 180, depths =
         )
         print_exact_result("    Univariate...\t", tree, resolution_time, gap, dataset)
 
+        # This variant keeps the same tree structure but allows a linear split at each internal node.
         tree, objective, resolution_time, gap = build_tree(
             dataset.X_train,
             dataset.Y_train,

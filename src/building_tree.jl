@@ -29,6 +29,8 @@ function build_tree(
     mu_max = 0.0
 
     if !multivariate
+        # In the univariate model, CM1 uses a strict left/right separation.
+        # The smallest positive spacing on each feature provides that margin in the Big-M constraints.
         mu_vector = ones(Float64, feature_count)
         for feature_id in 1:feature_count
             for first_id in 1:data_count
@@ -78,6 +80,7 @@ function build_tree(
     end
 
     @constraint(model, [node in (split_count + 1):(split_count + leaf_count)], sum(c[k, node] for k in 1:class_count) == 1)
+    # A sample reaching a node either stops there with its true class or keeps flowing to one child.
     @constraint(model, [sample_id in 1:data_count, node in 1:split_count], u_at[sample_id, node] == u_at[sample_id, 2 * node] + u_at[sample_id, 2 * node + 1] + u_tw[sample_id, node])
     @constraint(model, [sample_id in 1:data_count, node in (split_count + 1):(split_count + leaf_count)], u_at[sample_id, node] == u_tw[sample_id, node])
     @constraint(model, [sample_id in 1:data_count, node in 1:(split_count + leaf_count)], u_tw[sample_id, node] <= c[findfirst(classes .== y[sample_id]), node])
@@ -227,9 +230,11 @@ function build_tree(
 
     if multivariate
         if useFhS
+            # FhS replaces each cluster by its barycenter, while FU keeps the whole cluster box.
             @constraint(model, [cluster_id in 1:cluster_count, node in 1:split_count], sum(a[feature_id, node] * clusters[cluster_id].barycenter[feature_id] for feature_id in 1:feature_count) + mu <= b[node] + (2 + mu) * (1 - u_at[cluster_id, 2 * node]))
             @constraint(model, [cluster_id in 1:cluster_count, node in 1:split_count], sum(a[feature_id, node] * clusters[cluster_id].barycenter[feature_id] for feature_id in 1:feature_count) >= b[node] - 2 * (1 - u_at[cluster_id, 2 * node + 1]))
         elseif useFeS
+            # FeS is stricter: one original sample is selected inside each cluster and must satisfy the split.
             @constraint(model, [(cluster_id, cluster) in enumerate(clusters), sample_id in cluster.dataIds, node in 1:split_count], sum(a[feature_id, node] * cluster.x[sample_id, feature_id] for feature_id in 1:feature_count) + mu <= b[node] + (2 + mu) * (2 - u_at[cluster_id, 2 * node] - r[sample_id]))
             @constraint(model, [(cluster_id, cluster) in enumerate(clusters), sample_id in cluster.dataIds, node in 1:split_count], sum(a[feature_id, node] * cluster.x[sample_id, feature_id] for feature_id in 1:feature_count) >= b[node] - 2 * (1 - u_at[cluster_id, 2 * node + 1]))
         else
@@ -332,6 +337,7 @@ function iteratively_build_tree(
             tree = naivelyShiftSeparations(tree, x, y, classes, clusters)
         end
 
+        # The iterative scheme only refines clusters that are cut by the current tree.
         new_clusters = Cluster[]
         for cluster in clusters
             append!(new_clusters, getSplitClusters(cluster, tree))

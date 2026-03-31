@@ -16,6 +16,7 @@ function testMerge(
     println("      Gamma\tClusters\tGap\tTrain/Test\tTime")
 
     for gamma in gammas
+        # Gamma controls how aggressively same-class samples are merged before solving the clustered tree model.
         clusters = simpleMerge(X_train, Y_train, gamma)
         tree, objective, resolution_time, gap = build_tree(
             clusters,

@@ -3,7 +3,7 @@ include(joinpath(@__DIR__, "utilities.jl"))
 
 using MathOptInterface
 
-const MOI = MathOptInterface
+const Q4MOI = MathOptInterface
 
 """
 Study opposite-corner and linked-set equalities for univariate trees.
@@ -112,6 +112,7 @@ function identify_opposite_corner_equalities(X::Matrix{Float64}; tolerance::Floa
 
     for first_id in 1:(sample_count - 1)
         for second_id in (first_id + 1):sample_count
+            # Two samples define an axis-aligned box; we then search the other corners of the same box in the data.
             lower_bounds = min.(X[first_id, :], X[second_id, :])
             upper_bounds = max.(X[first_id, :], X[second_id, :])
             varying_features = varying_features_between(
@@ -141,6 +142,7 @@ function identify_opposite_corner_equalities(X::Matrix{Float64}; tolerance::Floa
             signature_mask = (1 << length(varying_features)) - 1
             opposite_pairs = Tuple{Int, Int}[]
             for signature in keys(signatures_to_ids)
+                # Opposite corners correspond to complementary bit patterns on the varying features.
                 complement = xor(signature, signature_mask)
                 signature < complement || continue
                 haskey(signatures_to_ids, complement) || continue
@@ -181,6 +183,7 @@ function identify_linked_set_equalities(X::Matrix{Float64}; tolerance::Float64 =
         groups = Dict{String, Vector{Int}}()
 
         for sample_id in 1:sample_count
+            # A linked set varies along one feature only, so the other coordinates are used as the grouping key.
             key_values = [X[sample_id, other_feature] for other_feature in 1:feature_count if other_feature != feature_id]
             key = vector_key(key_values)
             push!(get!(groups, key, Int[]), sample_id)
@@ -209,6 +212,7 @@ function identify_linked_set_equalities(X::Matrix{Float64}; tolerance::Float64 =
 
             repeat_count = minimum(length(values_to_ids[key]) for key in distinct_keys)
             for copy_id in 1:repeat_count
+                # The equality compares one cyclic shift of the ordered values on the active feature.
                 left_ids = [values_to_ids[distinct_keys[position]][copy_id] for position in 1:distinct_count]
                 right_ids = [
                     values_to_ids[distinct_keys[position == distinct_count ? 1 : position + 1]][copy_id]
@@ -228,6 +232,7 @@ end
 
 function build_equality_candidates(X::Matrix{Float64}; rounding_digits::Union{Nothing, Int} = nothing)
     rounded_X = round_features(X, rounding_digits)
+    # Rounding is only used to reveal repeated coordinates and boxes that are hidden by numerical precision.
     opposite_corner_equalities = identify_opposite_corner_equalities(rounded_X)
     linked_set_equalities = identify_linked_set_equalities(rounded_X)
 
@@ -261,6 +266,7 @@ function compute_univariate_margins(X::Matrix{Float64}; tolerance::Float64 = 1e-
 end
 
 function class_index_per_sample(y::AbstractVector, classes::AbstractVector)
+    # The objective rewards the class assigned to the true label of each sample.
     return [findfirst(classes .== target) for target in y]
 end
 
@@ -292,6 +298,7 @@ function build_unit_flow_model(
     end
 
     if relax_integrality
+        # The LP relaxation is used in the cutting-plane loop to detect violated equalities cheaply.
         @variable(model, 0 <= a[1:feature_count, 1:split_count] <= 1, base_name = "a")
         @variable(model, 0 <= c[1:class_count, 1:total_node_count] <= 1, base_name = "c")
         @variable(model, 0 <= u_at[1:sample_count, 1:total_node_count] <= 1, base_name = "u_at")
@@ -327,6 +334,8 @@ function build_unit_flow_model(
         b[node] <= sum(a[feature_id, node] for feature_id in 1:feature_count),
     )
 
+    # Unlike formulation F, every sample carries one unit of flow from the root.
+    # This is the setting in which the opposite-corner and linked-set equalities are valid.
     @constraint(model, [sample_id in 1:sample_count], u_at[sample_id, 1] == 1)
     @constraint(
         model,
@@ -365,6 +374,7 @@ function build_unit_flow_model(
     @constraint(
         model,
         [sample_id in 1:sample_count, node in 1:split_count],
+        # As in CM1, mu enforces a strict left branch when a sample is sent to the left child.
         sum(
             a[feature_id, node] * (X[sample_id, feature_id] + mu_vector[feature_id] - mu_min)
             for feature_id in 1:feature_count
@@ -387,6 +397,7 @@ function build_unit_flow_model(
         u_at[sample_id, 2 * node + 1] <= sum(a[feature_id, node] for feature_id in 1:feature_count),
     )
 
+    # At depth 2, opposite-corner equalities are written on the left child of the root.
     for (first_id, second_id, third_id, fourth_id) in opposite_equalities
         @constraint(
             model,
@@ -395,6 +406,7 @@ function build_unit_flow_model(
         )
     end
 
+    # Linked-set equalities balance the total terminal assignment of both sets for each class.
     for (left_ids, right_ids, _) in linked_equalities
         @constraint(
             model,
@@ -418,10 +430,10 @@ end
 
 function safe_node_count(model)
     try
-        return Int(round(MOI.get(model, MOI.NodeCount())))
+        return Int(round(Q4MOI.get(model, Q4MOI.NodeCount())))
     catch
         try
-            return Int(round(MOI.get(backend(model), MOI.NodeCount())))
+            return Int(round(Q4MOI.get(backend(model), Q4MOI.NodeCount())))
         catch
             return -1
         end
@@ -453,7 +465,7 @@ function solve_unit_flow_model(
     optimize!(model)
     resolution_time = time() - start_time
 
-    if primal_status(model) != MOI.FEASIBLE_POINT
+    if primal_status(model) != Q4MOI.FEASIBLE_POINT
         return (
             feasible = false,
             model = model,
@@ -470,7 +482,7 @@ function solve_unit_flow_model(
 
     objective = objective_value(model)
     bound = objective_bound(model)
-    gap = if relax_integrality || termination_status(model) == MOI.OPTIMAL
+    gap = if relax_integrality || termination_status(model) == Q4MOI.OPTIMAL
         0.0
     else
         100.0 * abs(objective - bound) / (abs(objective) + 1e-4)
@@ -487,6 +499,7 @@ function solve_unit_flow_model(
             class_prediction[node] = c_values[class_id, node] >= 1.0 - 1e-4 ? class_id : -1
         end
 
+        # The reconstructed tree is only used to report training errors from the integer solution.
         tree = Tree(
             D,
             value.(variables.a),
@@ -556,6 +569,7 @@ function solve_with_cutting_plane(
 
     while true
         lp_iterations += 1
+        # First solve the current LP relaxation, then add only the equalities violated by that fractional solution.
         last_lp_result = solve_unit_flow_model(
             X,
             y,
@@ -601,6 +615,7 @@ function solve_with_cutting_plane(
         unique!(added_linked_ids)
     end
 
+    # The final MIP is solved once with the subset of equalities selected by the LP separation loop.
     mip_result = solve_unit_flow_model(
         X,
         y,
@@ -650,6 +665,7 @@ function summarize_exact_result(result, X::Matrix{Float64}, y::AbstractVector, c
 end
 
 function evaluate_q4_modes(dataset, candidates; depth::Int, time_limit::Int)
+    # Baseline: no extra equality. All: every detected equality. Cutting plane: only violated equalities are kept.
     baseline_lp = solve_unit_flow_model(
         candidates.X,
         dataset.Y_train,
@@ -820,6 +836,7 @@ function first_useful_rounding(dataset; rounding_digits = DEFAULT_Q4_ROUNDINGS)
         digits === nothing && continue
         candidates = build_equality_candidates(dataset.X_train; rounding_digits = digits)
         useful = length(candidates.opposite_corner_equalities) + length(candidates.linked_set_equalities)
+        # We keep the first rounding level that produces at least one exploitable equality.
         useful > 0 && return digits, candidates
     end
     return nothing, nothing
@@ -847,6 +864,7 @@ function main_q4_opposite_corner(;
     println("=== Comparison without rounding ===")
     for dataset_name in dataset_names
         dataset = prepare_dataset(dataset_name)
+        # The first pass studies the raw normalized training set, without any coordinate rounding.
         candidates = build_equality_candidates(dataset.X_train)
         mode_results = evaluate_q4_modes(dataset, candidates; depth = actual_depth, time_limit = actual_time_limit)
 
@@ -882,6 +900,7 @@ function main_q4_opposite_corner(;
         end
 
         mode_results = evaluate_q4_modes(dataset, candidates; depth = actual_depth, time_limit = actual_time_limit)
+        # This second pass checks whether a light rounding makes the equalities informative on the dataset.
         println(
             "Dataset: ",
             dataset_name,
@@ -907,6 +926,7 @@ function main_q4_opposite_corner(;
     println("=== Rounding with cutting plane ===")
     for dataset_name in dataset_names
         dataset = prepare_dataset(dataset_name)
+        # The last pass isolates the effect of the rounding level when the cutting-plane strategy is used.
         rounding_results = evaluate_rounding_effect(
             dataset;
             depth = actual_depth,

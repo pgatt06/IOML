@@ -38,6 +38,7 @@ function Cluster(ids::Vector{Int}, x::Matrix{Float64}, y)
     cluster.x = x
     cluster.class = y
     cluster.dataIds = copy(ids)
+    # The lower and upper bounds define the axis-aligned box used by the grouped formulations and by H1 checks.
     cluster.lBounds = vec(minimum(x[ids, :], dims = 1))
     cluster.uBounds = vec(maximum(x[ids, :], dims = 1))
     cluster.barycenter = getBarycenter(cluster)
@@ -48,5 +49,6 @@ end
 Return the barycenter of a cluster.
 """
 function getBarycenter(cluster::Cluster)
+    # FhS represents each cluster by this barycenter when routing clustered data through the tree.
     return vec(mean(cluster.x[cluster.dataIds, :], dims = 1))
 end

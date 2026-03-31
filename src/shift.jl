@@ -13,6 +13,7 @@ function naivelyShiftSeparations(
     for node in eachindex(shifted_tree.b)
         shifted_tree.c[node] == -1 || continue
 
+        # This simple sweep is only a heuristic threshold recentering on the training set.
         best_errors = prediction_errors(shifted_tree, x, y, classes)
         best_threshold = shifted_tree.b[node]
 

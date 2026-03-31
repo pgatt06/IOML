@@ -13,6 +13,7 @@ end
 function numeric_labels(y)
     classes = unique(y)
     class_to_index = Dict(class => index for (index, class) in enumerate(classes))
+    # Labels are encoded only to rank candidate features with a simple training heuristic.
     return Float64[class_to_index[label] for label in y]
 end
 
@@ -40,6 +41,7 @@ function build_feature_candidates(feature_count::Int)
 
     for left in 1:(feature_count - 1)
         for right in (left + 1):feature_count
+            # We keep only simple pairwise transformations so that Q3 stays at the same modeling level as the course.
             push!(candidates, FeatureCandidate(left, right, :sum, "x$(left) + x$(right)"))
             push!(candidates, FeatureCandidate(left, right, :difference, "|x$(left) - x$(right)|"))
             push!(candidates, FeatureCandidate(left, right, :product, "x$(left) * x$(right)"))
@@ -86,6 +88,7 @@ function select_best_candidates(X_train::Matrix{Float64}, Y_train; k_best::Int =
         push!(scored_candidates, (score, candidate))
     end
 
+    # Candidates are ranked on the training split only, then reused on the test split without refitting.
     sort!(scored_candidates, by = item -> item[1], rev = true)
     selected = scored_candidates[1:min(k_best, length(scored_candidates))]
     return selected
@@ -216,6 +219,7 @@ function evaluate_precomputed_augmented_dataset(dataset_name::String; depth::Int
     original_dataset = prepare_dataset(dataset_name)
     augmented_dataset = prepare_dataset(augmented_dataset_name)
 
+    # For Titanic and diabetes, the extra features were prepared beforehand instead of being generated online here.
     @assert original_dataset.Y == augmented_dataset.Y "Labels differ between $dataset_name and $augmented_dataset_name"
 
     baseline_tree, _, baseline_time, baseline_gap = build_tree(

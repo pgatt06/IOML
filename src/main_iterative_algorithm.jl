@@ -17,6 +17,7 @@ function testIterative(
 
     for gamma in gammas
         clusters = simpleMerge(X_train, Y_train, gamma)
+        # The iterative algorithm starts from clustered data and reopens only the clusters cut by the current tree.
         tree, objective, resolution_time, gap, iteration_count = iteratively_build_tree(
             clusters,
             depth,
@@ -52,6 +53,7 @@ function run_iterative_dataset(dataset_name::String; time_limit::Int = 180, dept
     for depth in depths
         println("  D = ", depth)
 
+        # FU solves the clustered formulation once on the merged data.
         println("    FU")
         testMerge(
             dataset.X_train,
@@ -65,6 +67,7 @@ function run_iterative_dataset(dataset_name::String; time_limit::Int = 180, dept
             gammas = ITERATIVE_GAMMAS,
         )
 
+        # FhS uses cluster barycenters during the iterations, as in the heuristic studied in the course project.
         println("    FhS")
         testIterative(
             dataset.X_train,
@@ -78,6 +81,7 @@ function run_iterative_dataset(dataset_name::String; time_limit::Int = 180, dept
             shiftSeparations = false,
         )
 
+        # This post-processing step only shifts thresholds after optimization; it does not change the selected tree topology.
         println("    FhS with shifts")
         testIterative(
             dataset.X_train,
@@ -91,6 +95,7 @@ function run_iterative_dataset(dataset_name::String; time_limit::Int = 180, dept
             shiftSeparations = true,
         )
 
+        # FeS replaces barycenters by exact samples inside each cluster, which is more faithful but also more expensive.
         println("    FeS")
         testIterative(
             dataset.X_train,

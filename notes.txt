@@ -1,3 +1,0 @@
-https://archive.ics.uci.edu/datasets
-
--> liens pour les données 

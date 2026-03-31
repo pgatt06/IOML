@@ -1,0 +1,35 @@
+Validated summary of the feature augmentation study retained for the final report.
+Script: test_q3.jl
+
+Base datasets with on-the-fly feature generation
+
+Dataset: iris
+Selected generated features:
+- x2 + x4 | score 0.529
+- x3 * x4 | score 0.502
+Original dataset: 5/1 | split nodes = 2 | time = 11.7s | gap = 0.0%
+Augmented dataset: 2/2 | split nodes = 3 | time = 4.3s | gap = 0.0%
+
+Dataset: seeds
+Selected generated features:
+- x1 + x4 | score 0.908
+- x3 + x4 | score 0.901
+Original dataset: 11/2 | split nodes = 3 | time = 60.1s | gap = 5.8%
+Augmented dataset: 10/3 | split nodes = 3 | time = 47.0s | gap = 0.0%
+
+Dataset: wine
+Selected generated features:
+- x2 + x10 | score 0.786
+- x2 * x10 | score 0.739
+Original dataset: 7/2 | split nodes = 3 | time = 60.6s | gap = 4.2%
+Augmented dataset: 5/2 | split nodes = 3 | time = 60.0s | gap = 2.3%
+
+Additional datasets with precomputed augmented versions
+
+Dataset: titanic
+Original dataset: 150/39 | split nodes = 3 | time = 11.7s | gap = 26.7%
+Augmented dataset: 165/40 | split nodes = 3 | time = 10.1s | gap = 30.2%
+
+Dataset: diabetes
+Original dataset: 3880/967 | split nodes = 3 | time = 11.0s | gap = 4.8e9%
+Augmented dataset: 3880/967 | split nodes = 3 | time = 11.0s | gap = 4.8e9%

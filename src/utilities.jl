@@ -5,6 +5,7 @@ include("banknote_utils.jl")
 include("wdbc_utils.jl")
 
 if !isdefined(@__MODULE__, :BASE_DATASETS)
+    # The three datasets provided directly in the project statement.
     const BASE_DATASETS = ["iris", "seeds", "wine"]
 end
 if !isdefined(@__MODULE__, :REPORTED_DATASETS)
@@ -151,6 +152,7 @@ Load, normalize and split a dataset with the common protocol used in the report.
 """
 function prepare_dataset(dataset_name::String; test_ratio::Float64 = 0.2, seed::Int = 1)
     X, Y, file_path = load_dataset(dataset_name)
+    # The report follows this project-wide protocol: normalize features, then apply one fixed train/test split.
     normalized_X = normalize_features(X)
     train_indexes, test_indexes = train_test_indexes(length(Y), test_ratio; seed = seed)
 
@@ -175,5 +177,6 @@ function print_dataset_header(dataset, time_limit::Int)
         " | Features: ", size(dataset.X_train, 2),
         " | Classes: ", length(dataset.classes),
     )
+    # The time limit is interpreted per optimization model, not per dataset.
     println("Time limit per optimization: ", time_limit, "s")
 end
