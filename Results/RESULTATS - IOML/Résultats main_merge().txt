@@ -1,3 +1,8 @@
+OBSOLETE DRAFT LOG
+This legacy file predates the grouped-multivariate evaluation fix in src/struct/tree.jl.
+Do not use it for the final report.
+Use Results/corrected_merge_multivariate_summary.txt and rapport/rapport.tex instead.
+
 testMerge (generic function with 1 method)
 
 julia> main_merge()

@@ -1,3 +1,8 @@
+OBSOLETE DRAFT LOG
+This legacy file contains exploratory iterative runs that were not retained in the final report tables.
+Do not use it for the final report.
+Use rapport/rapport.tex instead.
+
 testIterative (generic function with 1 method)
 
 julia> main_iterative()

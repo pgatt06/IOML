@@ -110,6 +110,7 @@ end
 
 """
 Return true when a sample intersects at least one feature interval.
+This matches the H1 condition used in the course slides.
 """
 function isInABound(v::Vector{Float64}, lower_bounds::Vector{Float64}, upper_bounds::Vector{Float64})
     feature_id = 1

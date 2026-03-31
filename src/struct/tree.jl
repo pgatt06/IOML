@@ -239,11 +239,12 @@ function Tree(D::Int64, c::Vector{Int64}, u::Matrix{Int64}, s_model::Matrix{Int6
         left_data = Matrix{Float64}(undef, 0, feature_count)
 
         for cluster_id in 1:cluster_count
-            # Keep the original recentering behaviour used in the stored experiments.
+            cluster_data = clusters[cluster_id].x[clusters[cluster_id].dataIds, :]
+
             if u[cluster_id, 2 * node] == 1
-                left_data = vcat(left_data, clusters[cluster_id].x)
+                left_data = vcat(left_data, cluster_data)
             elseif u[cluster_id, 2 * node + 1] == 1
-                right_data = vcat(right_data, clusters[cluster_id].x)
+                right_data = vcat(right_data, cluster_data)
             end
         end
 

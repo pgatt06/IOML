@@ -49,9 +49,9 @@ Two complementary studies are also included. The first one adds simple variables
 
 All datasets are normalized to the $[0,1]$ range. The train/test split is fixed at 80/20 with seed 1. The studied depths are $D \in \{2,3,4\}$.
 
-When several runs existed for the same script and dataset, the main tables keep only the run with the largest available time limit. In \texttt{main\_merge.jl} and \texttt{main\_iterative\_algorithm.jl}, several values of $\gamma$ are tested at each depth; to keep the tables readable, only the configuration with the lowest test error is kept for each depth, with train error used as a tie-breaker.
+When several runs existed for the same script and dataset, the main tables keep only the run with the largest available time limit. In \texttt{main\_merge.jl} and \texttt{main\_iterative\_algorithm.jl}, several values of $\gamma$ are tested at each depth; to keep the tables readable, only the configuration with the lowest test error is kept for each depth, with train error and then solving time used as tie-breakers.
 
-The scripts \texttt{main.jl} and \texttt{main\_merge.jl} are studied in both the univariate and multivariate settings. The analysis of \texttt{main\_iterative\_algorithm.jl} is limited to the univariate case. For this algorithm, the solver limit applies to each successive subproblem, so the reported total time can exceed \SI{180}{s}. The study of opposite-corner and linked-set equalities uses a separate depth-2 comparison with a \SI{30}{s} limit per LP or MIP solve, because each reported number already combines several solves.
+The scripts \texttt{main.jl} and \texttt{main\_merge.jl} are studied in both the univariate and multivariate settings. The analysis of \texttt{main\_iterative\_algorithm.jl} is limited to the univariate case. For this algorithm, the solver limit applies to each successive subproblem, so the reported total time can exceed \SI{180}{s}. The grouped and iterative tables retained in the final report focus on the five datasets required by the subject: the three provided datasets plus \texttt{banknote} and \texttt{wdbc}. Short exploratory grouped or iterative runs on \texttt{titanic} and \texttt{diabetes} were not kept in the final comparison tables. The study of opposite-corner and linked-set equalities uses a separate depth-2 comparison with a \SI{30}{s} limit per LP or MIP solve, because each reported number already combines several solves.
 
 \section{Main Results}
 
@@ -116,7 +116,7 @@ The main trend is still clear on the first five datasets. On \texttt{seeds}, \te
 
 \subsection{Grouped Formulation}
 
-The script \texttt{main\_merge.jl} replaces individual samples with same-class clusters that can no longer be split. Tables~\ref{tab:merge-results-small},~\ref{tab:merge-results-large}, and~\ref{tab:merge-results-extra} keep only the best value of $\gamma$ at each depth. The univariate and multivariate columns therefore correspond to the best configuration found for each depth.
+The script \texttt{main\_merge.jl} replaces individual samples with same-class clusters that can no longer be split. Tables~\ref{tab:merge-results-small} and~\ref{tab:merge-results-large} keep only the best value of $\gamma$ at each depth. The univariate and multivariate columns therefore correspond to the best configuration found for each depth.
 
 \begin{table}[H]
 \centering
@@ -125,17 +125,17 @@ The script \texttt{main\_merge.jl} replaces individual samples with same-class c
 \toprule
 Dataset & $D$ & Univariate & Multivariate \\
 \midrule
-iris & 2 & \methodcell{20}{5}{1}{0.1}{0.0} & \methodcell{0}{82}{18}{0.1}{0.0} \\
-iris & 3 & \methodcell{40}{0}{1}{2.7}{0.0} & \methodcell{20}{82}{18}{0.2}{0.0} \\
-iris & 4 & \methodcell{40}{0}{1}{1.8}{0.0} & \methodcell{20}{82}{18}{0.7}{0.0} \\
+iris & 2 & \methodcell{20}{5}{1}{0.1}{0.0} & \methodcell{20}{1}{0}{0.5}{0.0} \\
+iris & 3 & \methodcell{40}{0}{1}{2.7}{0.0} & \methodcell{100}{0}{0}{1.8}{0.0} \\
+iris & 4 & \methodcell{40}{0}{1}{1.8}{0.0} & \methodcell{100}{0}{1}{14.0}{0.0} \\
 \midrule
-seeds & 2 & \methodcell{60}{12}{2}{2.2}{0.0} & \methodcell{100}{115}{25}{1.0}{0.0} \\
-seeds & 3 & \methodcell{60}{5}{2}{180.0}{1.8} & \methodcell{0}{112}{28}{0.2}{0.0} \\
-seeds & 4 & \methodcell{60}{4}{2}{180.1}{1.8} & \methodcell{80}{115}{25}{23.2}{0.0} \\
+seeds & 2 & \methodcell{60}{12}{2}{2.2}{0.0} & \methodcell{40}{0}{0}{0.5}{0.0} \\
+seeds & 3 & \methodcell{60}{5}{2}{180.0}{1.8} & \methodcell{40}{0}{1}{1.9}{0.0} \\
+seeds & 4 & \methodcell{60}{4}{2}{180.1}{1.8} & \methodcell{80}{0}{0}{34.1}{0.0} \\
 \midrule
-wine & 2 & \methodcell{60}{5}{2}{2.1}{0.0} & \methodcell{0}{86}{21}{0.0}{0.0} \\
-wine & 3 & \methodcell{80}{0}{2}{51.2}{0.0} & \methodcell{0}{86}{21}{0.1}{0.0} \\
-wine & 4 & \methodcell{60}{0}{3}{44.2}{0.0} & \methodcell{40}{86}{21}{0.3}{0.0} \\
+wine & 2 & \methodcell{60}{5}{2}{2.1}{0.0} & \methodcell{100}{0}{1}{0.7}{0.0} \\
+wine & 3 & \methodcell{80}{0}{2}{51.2}{0.0} & \methodcell{0}{0}{1}{0.1}{0.0} \\
+wine & 4 & \methodcell{60}{0}{3}{44.2}{0.0} & \methodcell{80}{0}{0}{7.7}{0.0} \\
 \bottomrule
 \end{tabularx}
 \caption{Best configurations of \texttt{main\_merge.jl} on \texttt{iris}, \texttt{seeds}, and \texttt{wine}.}
@@ -153,41 +153,22 @@ banknote & 2 & \methodcell{40}{399}{102}{59.1}{0.0} & \nofeasible \\
 banknote & 3 & \methodcell{20}{414}{102}{19.6}{0.0} & \nofeasible \\
 banknote & 4 & \methodcell{0}{492}{118}{1.0}{0.0} & \nofeasible \\
 \midrule
-wdbc & 2 & \methodcell{80}{18}{6}{180.1}{4.1} & \methodcell{60}{169}{43}{0.5}{0.0} \\
-wdbc & 3 & \methodcell{80}{16}{4}{523.7}{3.9} & \methodcell{40}{169}{43}{9.5}{0.0} \\
-wdbc & 4 & \methodcell{80}{29}{6}{180.3}{7.1} & \methodcell{0}{169}{43}{1.4}{0.0} \\
+wdbc & 2 & \methodcell{80}{18}{6}{180.1}{4.1} & \methodcell{20}{0}{6}{0.6}{0.0} \\
+wdbc & 3 & \methodcell{80}{16}{4}{523.7}{3.9} & \methodcell{0}{0}{6}{1.6}{0.0} \\
+wdbc & 4 & \methodcell{80}{29}{6}{180.3}{7.1} & \methodcell{40}{0}{4}{36.3}{0.0} \\
 \bottomrule
 \end{tabularx}
 \caption{Best configurations of \texttt{main\_merge.jl} on \texttt{banknote} and \texttt{wdbc}.}
 \label{tab:merge-results-large}
 \end{table}
 
-\begin{table}[H]
-\centering
-\footnotesize
-\begin{tabularx}{\textwidth}{llYY}
-\toprule
-Dataset & $D$ & Univariate & Multivariate \\
-\midrule
-titanic & 2 & \methodcell{20}{140}{39}{10.0}{9.6} & \methodcell{0}{263}{79}{0.1}{0.0} \\
-titanic & 3 & \methodcell{40}{137}{38}{10.1}{24.3} & \methodcell{40}{137}{38}{10.1}{24.3} \\
-titanic & 4 & \methodcell{20}{226}{69}{10.3}{45.9} & \methodcell{0}{263}{79}{2.6}{0.0} \\
-\midrule
-diabetes & 2 & \methodcell{0}{317}{79}{5.0}{0.0} & \methodcell{0}{3880}{967}{7.5}{0.0} \\
-diabetes & 3 & \methodcell{0}{317}{79}{0.2}{0.0} & \methodcell{0}{3001}{754}{13.0}{0.0} \\
-diabetes & 4 & \methodcell{0}{317}{79}{0.2}{0.0} & \methodcell{0}{2719}{679}{24.4}{130.7} \\
-\bottomrule
-\end{tabularx}
-\caption{Best configurations of \texttt{main\_merge.jl} on \texttt{titanic} and \texttt{diabetes}. For \texttt{diabetes}, only the coarse clustering case $\gamma = 0$ was retained, because wider sweeps became too expensive.}
-\label{tab:merge-results-extra}
-\end{table}
 \FloatBarrier
 
-This grouped formulation remains credible in the univariate setting on the three smaller datasets. It reaches almost the same error levels as the exact univariate approach, often with lower times at depths 2 and 3. On \texttt{wdbc}, it remains acceptable but more costly. On \texttt{banknote}, it does not bring a clear benefit. On \texttt{titanic}, it does not really change the difficulty of the problem: the univariate version stays better than the multivariate one, but the errors remain high. On \texttt{diabetes}, the only retained grouped runs use $\gamma = 0$, which keeps just three clusters. In that setting, the univariate version is stable, while the multivariate one remains weak and quickly degrades at depth 4.
+This grouped formulation remains credible in the univariate setting on the three smaller datasets. It reaches almost the same error levels as the exact univariate approach, often with lower times at depths 2 and 3. In the multivariate setting, it is actually strong on \texttt{iris}, \texttt{seeds}, \texttt{wine}, and \texttt{wdbc}: at the retained values of $\gamma$, the grouped trees reach zero training error on all four datasets and often very low test error in a few seconds. The clear exception is \texttt{banknote}, where no multivariate grouped run produced a feasible solution within \SI{180}{s}. Since the final grouped comparison is restricted to the five required datasets, the short exploratory grouped runs on \texttt{titanic} and \texttt{diabetes} are not discussed further here.
 
 \subsection{Iterative Algorithms}
 
-The script \texttt{main\_iterative\_algorithm.jl} is studied only in the univariate case. Tables~\ref{tab:iterative-results-small},~\ref{tab:iterative-results-large}, and~\ref{tab:iterative-results-extra} compare the best versions of $F_h^S$, $F_h^S$ with \emph{shifts}, and $F_e^S$. Here again, each cell reports train/test errors, total time, and the gap.
+The script \texttt{main\_iterative\_algorithm.jl} is studied only in the univariate case. Tables~\ref{tab:iterative-results-small} and~\ref{tab:iterative-results-large} compare the best versions of $F_h^S$, $F_h^S$ with \emph{shifts}, and $F_e^S$. Here again, each cell reports train/test errors, total time, and the gap.
 
 \begin{table}[H]
 \centering
@@ -233,28 +214,9 @@ wdbc & 4 & \methodcell{40}{24}{4}{180.4}{1.3} & \methodcell{0}{0}{0}{180.8}{1.6}
 \label{tab:iterative-results-large}
 \end{table}
 
-\begin{table}[H]
-\centering
-\scriptsize
-\begin{tabularx}{\textwidth}{llYYY}
-\toprule
-Dataset & $D$ & $F_h^S$ & $F_h^S$ + shifts & $F_e^S$ \\
-\midrule
-titanic & 2 & \methodcell{60}{140}{33}{20.2}{24.5} & \methodcell{60}{140}{33}{20.3}{24.5} & \methodcell{60}{146}{38}{20.3}{25.8} \\
-titanic & 3 & \methodcell{40}{168}{49}{20.8}{30.9} & \methodcell{40}{0}{0}{20.4}{30.4} & \methodcell{0}{151}{39}{20.4}{4.4} \\
-titanic & 4 & \methodcell{0}{346}{80}{20.2}{11.1} & \methodcell{0}{0}{0}{21.1}{7.4} & \methodcell{20}{151}{39}{20.9}{27.4} \\
-\midrule
-diabetes & 2 & \methodcell{0}{317}{79}{4.7}{0.0} & \methodcell{0}{0}{0}{19.7}{0.0} & \methodcell{0}{3880}{967}{23.0}{4.8e9} \\
-diabetes & 3 & \methodcellna{0}{317}{79}{0.1} & \methodcell{0}{1604}{396}{22.6}{27.4} & \methodcell{0}{3277}{833}{21.9}{0.0} \\
-diabetes & 4 & \methodcell{0}{317}{79}{0.1}{0.0} & \methodcell{0}{1358}{318}{26.0}{0.0} & \methodcell{0}{2883}{716}{23.7}{130.7} \\
-\bottomrule
-\end{tabularx}
-\caption{Best configurations of \texttt{main\_iterative\_algorithm.jl} on \texttt{titanic} and \texttt{diabetes}. For \texttt{diabetes}, only the coarse clustering case $\gamma = 0$ was retained.}
-\label{tab:iterative-results-extra}
-\end{table}
 \FloatBarrier
 
-The clearest result in this section is the role of \emph{shifts}. The $F_h^S$ variant with \emph{shifts} is the most regular one: it reaches zero test error several times on \texttt{iris}, \texttt{seeds}, and \texttt{wine}, and also on \texttt{banknote}, \texttt{wdbc}, and \texttt{titanic} at larger depths. The plain $F_h^S$ version remains useful but less stable. The exact version $F_e^S$ is rarely the best compromise; it is usually slower without a clear gain in test error. On \texttt{diabetes}, the retained runs again use $\gamma = 0$ only. In that coarse setting, the iterative heuristics can strongly improve on the grouped baseline at depth 2, but the behavior becomes unstable at depths 3 and 4.
+The clearest result in this section is the role of \emph{shifts}. The $F_h^S$ variant with \emph{shifts} is the most regular one: it reaches zero test error several times on \texttt{iris}, \texttt{seeds}, and \texttt{wine}, and also on \texttt{wdbc} at larger depths. The plain $F_h^S$ version remains useful but less stable. The exact version $F_e^S$ is rarely the best compromise; it is usually slower without a clear gain in test error. As in the grouped study, the short exploratory iterative runs on \texttt{titanic} and \texttt{diabetes} were not kept in the final comparison tables.
 
 \section{Additional Work}
 
@@ -297,24 +259,24 @@ Three variants were compared: the unit-flow baseline, the same model with all eq
 \toprule
 Dataset & Rounding & Mode & Added eq. & LP value & Train err. & Time (s) & B\&B nodes \\
 \midrule
-iris & 1 & baseline & 0 / 0 & 120.0 & 5 & 25.9 & 1606 \\
-iris & 1 & all equalities & 237 / 4 & 120.0 & 5 & 10.8 & 317 \\
-iris & 1 & cutting plane & 186 / 0 & 120.0 & 5 & 16.6 & 433 \\
+iris & 1 & baseline & 0 / 0 & 120.0 & 5 & 12.5 & 1606 \\
+iris & 1 & all equalities & 237 / 4 & 120.0 & 5 & 8.1 & 317 \\
+iris & 1 & cutting plane & 186 / 0 & 120.0 & 5 & 10.0 & 433 \\
 \midrule
-seeds & 1 & baseline & 0 / 0 & 168.0 & 21 & 30.1 & 1716 \\
-seeds & 1 & all equalities & 60 / 0 & 168.0 & 24 & 30.2 & 465 \\
-seeds & 1 & cutting plane & 44 / 0 & 168.0 & 16 & 37.0 & 1474 \\
+seeds & 1 & baseline & 0 / 0 & 168.0 & 16 & 28.7 & 5409 \\
+seeds & 1 & all equalities & 60 / 0 & 168.0 & 16 & 30.1 & 5406 \\
+seeds & 1 & cutting plane & 44 / 0 & 168.0 & 16 & 30.7 & 5668 \\
 \midrule
-wine & 0 & baseline & 0 / 0 & 142.0 & 21 & 30.1 & 18 \\
-wine & 0 & all equalities & 1421 / 0 & 142.0 & 21 & 29.2 & 0 \\
-wine & 0 & cutting plane & 1028 / 0 & 142.0 & 21 & 23.3 & 0 \\
+wine & 0 & baseline & 0 / 0 & 142.0 & 21 & 15.3 & 139 \\
+wine & 0 & all equalities & 1421 / 0 & 142.0 & 21 & 8.8 & 0 \\
+wine & 0 & cutting plane & 1028 / 0 & 142.0 & 21 & 9.3 & 0 \\
 \bottomrule
 \end{tabularx}
 \caption{Comparison of the unit-flow formulation, all equalities, and the cutting-plane variant on the first useful rounded version of each dataset. Added equalities are reported as opposite-corner / linked-set counts.}
 \label{tab:q4-methods}
 \end{table}
 
-Two remarks stand out. First, the LP objective stays equal to the number of training samples in all tested cases. In practice, this means that the unit-flow relaxation remains weak on these datasets, and the added equalities do not change that value in the reported runs. Second, their effect on the search tree is mixed. On \texttt{iris}, the opposite-corner equalities clearly reduce the number of branch-and-bound nodes and the full model is the fastest one. On \texttt{seeds}, the generated equalities do not improve the LP objective and the all-equalities model even worsens the training result, while the cutting-plane variant keeps the best training error but at a higher total time. On \texttt{wine}, the equalities become useful only after a very coarse rounding, where they eliminate the search tree, but the rounded data are already much less faithful to the original geometry.
+Two remarks stand out. First, the LP objective stays equal to the number of training samples in all tested cases. In practice, this means that the unit-flow relaxation remains weak on these datasets, and the added equalities do not change that value in the reported runs. Second, their effect on the search tree is mixed. On \texttt{iris}, the opposite-corner equalities clearly reduce the number of branch-and-bound nodes and the full model is the fastest one. On \texttt{seeds}, the generated equalities do not improve either the LP objective or the training error, and they slightly increase the total time. On \texttt{wine}, the equalities become useful only after a very coarse rounding, where they eliminate the search tree, but the rounded data are already much less faithful to the original geometry.
 
 \begin{table}[H]
 \centering
@@ -323,33 +285,33 @@ Two remarks stand out. First, the LP objective stays equal to the number of trai
 \toprule
 Dataset & Rounding & Candidates & Added eq. & Train err. & Time (s) & B\&B nodes \\
 \midrule
-iris & none & 0 / 0 & 0 / 0 & 5 & 20.9 & 1223 \\
-iris & 2 & 0 / 0 & 0 / 0 & 5 & 30.6 & 1522 \\
-iris & 1 & 237 / 4 & 186 / 0 & 5 & 17.5 & 433 \\
-iris & 0 & 1333 / 0 & 741 / 0 & 22 & 6.9 & 0 \\
+iris & none & 0 / 0 & 0 / 0 & 5 & 8.3 & 1223 \\
+iris & 2 & 0 / 0 & 0 / 0 & 5 & 15.7 & 2170 \\
+iris & 1 & 237 / 4 & 186 / 0 & 5 & 8.3 & 433 \\
+iris & 0 & 1333 / 0 & 741 / 0 & 22 & 2.9 & 0 \\
 \midrule
-seeds & none & 0 / 0 & 0 / 0 & 11 & 30.9 & 1779 \\
-seeds & 2 & 0 / 0 & 0 / 0 & 11 & 30.5 & 2383 \\
-seeds & 1 & 60 / 0 & 44 / 0 & 16 & 33.5 & 2693 \\
-seeds & 0 & 2866 / 0 & 556 / 0 & 25 & 5.8 & 0 \\
+seeds & none & 0 / 0 & 0 / 0 & 11 & 30.5 & 4921 \\
+seeds & 2 & 0 / 0 & 0 / 0 & 11 & 30.4 & 4655 \\
+seeds & 1 & 60 / 0 & 44 / 0 & 16 & 24.5 & 5663 \\
+seeds & 0 & 2866 / 0 & 556 / 0 & 25 & 4.5 & 0 \\
 \midrule
-wine & none & 0 / 0 & 0 / 0 & 5 & 30.9 & 1557 \\
-wine & 2 & 0 / 0 & 0 / 0 & 12 & 30.6 & 1232 \\
-wine & 1 & 0 / 0 & 0 / 0 & 7 & 30.5 & 1591 \\
-wine & 0 & 1421 / 0 & 1028 / 0 & 21 & 13.2 & 0 \\
+wine & none & 0 / 0 & 0 / 0 & 5 & 30.4 & 3593 \\
+wine & 2 & 0 / 0 & 0 / 0 & 8 & 30.5 & 3057 \\
+wine & 1 & 0 / 0 & 0 / 0 & 7 & 20.8 & 2270 \\
+wine & 0 & 1421 / 0 & 1028 / 0 & 21 & 8.8 & 0 \\
 \bottomrule
 \end{tabularx}
 \caption{Effect of rounding with the cutting-plane strategy. Candidate and added equalities are reported as opposite-corner / linked-set counts.}
 \label{tab:q4-rounding}
 \end{table}
 
-The rounding study confirms that these equalities are highly sensitive to the data geometry. Mild rounding helps on \texttt{iris}: at one decimal, the training error is unchanged and the search tree becomes much smaller. The same behavior is not observed on \texttt{seeds}, where rounding mostly hurts the training fit or increases the total time. On \texttt{wine}, no useful equality appears before rounding to zero decimals, and this aggressive modification sharply degrades the training fit even though the model then solves at the root. Linked sets remain rare in practice: only \texttt{iris} at one decimal generates them, and none of these four linked-set equalities is violated by the LP solution. In this additional study, opposite-corner equalities are therefore the only ones that have a visible algorithmic effect.
+The rounding study confirms that these equalities are highly sensitive to the data geometry. Mild rounding helps on \texttt{iris}: at one decimal, the training error is unchanged and the search tree becomes much smaller. The same behavior is not observed on \texttt{seeds}, where rounding hurts the training fit and does not simplify the branch-and-bound search. On \texttt{wine}, no useful equality appears before rounding to zero decimals, and this aggressive modification sharply degrades the training fit even though the model then solves at the root. Linked sets remain rare in practice: only \texttt{iris} at one decimal generates them, and none of these four linked-set equalities is violated by the LP solution. In this additional study, opposite-corner equalities are therefore the only ones that have a visible algorithmic effect.
 
 \section{Conclusion}
 
 The exact multivariate formulation remains the best practical reference on most datasets, especially at depths 2 and 3. The exact univariate formulation quickly becomes more expensive as depth increases, with more irregular behavior on \texttt{titanic} and \texttt{diabetes}.
 
-The grouped formulation $F_U$ is useful as a univariate approximation on medium-sized datasets, but its multivariate version is not convincing. In the iterative part, the strongest variant remains $F_h^S$ with \emph{shifts}: it is the one that most often gives the best compromise in test error, including on \texttt{titanic}.
+The grouped formulation $F_U$ is useful as a univariate approximation on medium-sized datasets, and its multivariate version is also competitive on the five retained datasets except \texttt{banknote}. In the iterative part, the strongest variant remains $F_h^S$ with \emph{shifts}: it is the one that most often gives the best compromise in test error on the retained runs.
 
 The two additional studies remain interesting but secondary. Adding simple variables does not bring a general improvement, even after extending the analysis to \texttt{titanic} and \texttt{diabetes}, and it does not reduce the depth-2 tree size in the retained runs. The geometric equalities require a dedicated unit-flow formulation; on the original data they are almost absent, and after rounding their effect depends strongly on how much the data are altered. They can reduce the search tree on \texttt{iris} and on heavily rounded \texttt{wine}, but they do not improve the LP objective at depth 2 and they can easily damage the training fit. Overall, the clearest results still come from the comparison between the exact, grouped, and iterative formulations.
 

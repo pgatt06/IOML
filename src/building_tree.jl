@@ -302,7 +302,6 @@ function iteratively_build_tree(
     shiftSeparations::Bool = false,
 )
     start_time = time()
-    final_time = start_time + time_limit
 
     last_objective = nothing
     last_feasible_tree = nothing
@@ -313,40 +312,39 @@ function iteratively_build_tree(
     useFhS = !isExact
     useFeS = isExact
 
-    while cluster_split && (time_limit == -1 || time() < final_time)
+    while cluster_split
         iteration_count += 1
-        remaining_time = round(Int, final_time - time())
 
         tree, objective, solve_time, gap = build_tree(
             clusters,
             D,
             classes;
             multivariate = multivariate,
-            time_limit = time_limit == -1 ? -1 : remaining_time,
+            time_limit = time_limit,
             mu = mu,
             useFhS = useFhS,
             useFeS = useFeS,
         )
 
-        if objective != -1
-            if shiftSeparations
-                tree = naivelyShiftSeparations(tree, x, y, classes, clusters)
-            end
+        objective == -1 && break
 
-            new_clusters = Cluster[]
-            for cluster in clusters
-                append!(new_clusters, getSplitClusters(cluster, tree))
-            end
-
-            if length(clusters) == length(new_clusters)
-                cluster_split = false
-            else
-                clusters = new_clusters
-            end
-
-            last_feasible_tree = tree
-            last_objective = objective
+        if shiftSeparations
+            tree = naivelyShiftSeparations(tree, x, y, classes, clusters)
         end
+
+        new_clusters = Cluster[]
+        for cluster in clusters
+            append!(new_clusters, getSplitClusters(cluster, tree))
+        end
+
+        if length(clusters) == length(new_clusters)
+            cluster_split = false
+        else
+            clusters = new_clusters
+        end
+
+        last_feasible_tree = tree
+        last_objective = objective
     end
 
     total_time = time() - start_time

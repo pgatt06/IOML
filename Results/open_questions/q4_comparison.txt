@@ -1,3 +1,7 @@
+OBSOLETE EXPLORATORY LOG
+This older candidate-count exploration is not the Q4 result file used in the final report.
+Use Results/open_questions/q4_results.txt and rapport/rapport.tex instead.
+
 === Geometric structure exploration ===
 This script identifies opposite-corner and linked-set candidates after optional rounding.
 It also evaluates the exact univariate tree on the rounded data at depth 2.
@@ -19,4 +23,3 @@ wine | rounding = none | opposite-corner candidates = 6629 | linked-set candidat
 wine | rounding = 3 | opposite-corner candidates = 6629 | linked-set candidates = 0 | exact tree train/test = 5/2 | time = 34.4s | gap = 0.0%
 wine | rounding = 2 | opposite-corner candidates = 6625 | linked-set candidates = 0 | exact tree train/test = 6/2 | time = 74.1s | gap = 0.0%
 wine | rounding = 1 | opposite-corner candidates = 5972 | linked-set candidates = 0 | exact tree train/test = 7/3 | time = 34.7s | gap = 0.0%
-
